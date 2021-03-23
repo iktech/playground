@@ -42,7 +42,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
           script: |
-            github.git.createRef({
+            await github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: "refs/tags/${{ env.IMAGE_TAG }}",
@@ -50,7 +50,7 @@ jobs:
             });
 
             try {
-                github.git.deleteRef({
+                await github.git.deleteRef({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   ref: "tags/${{ env.TAG_1 }}"
@@ -59,7 +59,7 @@ jobs:
                 console.log('Tag does not exist yet: ' + e);
             }
 
-            github.git.createRef({
+            await github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: "refs/tags/${{ env.TAG_1 }}",
@@ -67,7 +67,7 @@ jobs:
             });
 
             try {
-                github.git.deleteRef({
+                await github.git.deleteRef({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   ref: "tags/${{ env.TAG_2 }}"
@@ -75,7 +75,7 @@ jobs:
             } catch(e) {
                 console.log('Tag does not exist yet: ' + e);
             }
-            github.git.createRef({
+            await github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: "refs/tags/${{ env.TAG_2 }}",
@@ -83,7 +83,7 @@ jobs:
             });
 
             try {
-                github.git.deleteRef({
+                await github.git.deleteRef({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   ref: "tags/${{ env.TAG_3 }}"
@@ -91,7 +91,7 @@ jobs:
             } catch(e) {
                 console.log('Tag does not exist yet: ' + e);
             }
-            github.git.createRef({
+            await github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: "refs/tags/${{ env.TAG_3 }}",
