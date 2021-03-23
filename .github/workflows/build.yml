@@ -32,6 +32,69 @@ jobs:
         run: |
           echo "IMAGE_TAG=$VERSION.$(($BUILD_NUMBER + 107))" >> $GITHUB_ENV
           IFS='.' read -ra PARTS <<< "$VERSION"
-          echo "${PARTS[0]}.${PARTS[1]}.${PARTS[2]}"
+          echo "TAG_1=${PARTS[0]}" >> $GITHUB_ENV
+          echo "TAG_2=${PARTS[0]}.${PARTS[1]}" >> $GITHUB_ENV
+          echo "TAG_3=${PARTS[0]}.${PARTS[1]}.${PARTS[2]}" >> $GITHUB_ENV
 
+      - uses: actions/github-script@v3
+        id: tag-source
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ env.IMAGE_TAG }}",
+              sha: context.sha
+            });
+
+            try {
+                github.git.deleteRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: "tags/${{ env.TAG_1 }}"
+                });
+            } catch(e) {
+                console.log('Tag does not exist yet: ' + e);
+            }
+
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ env.TAG_1 }}",
+              sha: context.sha
+            });
+
+            try {
+                github.git.deleteRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: "tags/${{ env.TAG_2 }}"
+                });
+            } catch(e) {
+                console.log('Tag does not exist yet: ' + e);
+            }
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ env.TAG_2 }}",
+              sha: context.sha
+            });
+
+            try {
+                github.git.deleteRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: "tags/${{ env.TAG_3 }}"
+                });
+            } catch(e) {
+                console.log('Tag does not exist yet: ' + e);
+            }
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ env.TAG_3 }}",
+              sha: context.sha
+            });
       
