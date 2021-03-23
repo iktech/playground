@@ -32,6 +32,6 @@ jobs:
         run: |
           echo "IMAGE_TAG=$VERSION.$(($BUILD_NUMBER + 107))" >> $GITHUB_ENV
           IFS='.' read -ra PARTS <<< "$VERSION"
-          echo "${PARTS}"
+          echo "${PARTS[0]}.${PARTS[1]}.${PARTS[2]}"
 
       
